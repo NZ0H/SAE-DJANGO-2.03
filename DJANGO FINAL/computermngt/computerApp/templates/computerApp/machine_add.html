@@ -3,7 +3,7 @@
 {% block content %}
 <form method="post">
 {% csrf_token %}
-{{form.nom}}
+<p style='color:white'>Nom :</p>{{form.nom}}
 <input type="submit" value = "Submit">
 </form>
 {% endblock %}
