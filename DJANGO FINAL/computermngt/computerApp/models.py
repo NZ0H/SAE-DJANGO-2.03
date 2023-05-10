@@ -1,15 +1,21 @@
 from django.db import models
-
+from datetime import datetime
 # Create your models here.
 
 class Machine(models.Model):
-    id = models.AutoField(
-        primary_key=True,
-        editable=False
+    TYPE = (
+        ('PC' , ('PC − Run windows ')),
+        ('Mac',('MAc − Run MacOS')),
+        ('Serveur',('Serveur −Simple Server to deploy virtual machines')),
+        ('Switch',('Switch − To maintains and connect servers')),
+        ('Routeur',('Routeur - To maintains and connect servers'))
     )
-    nom = models.CharField(
-        max_length = 200 ,
-        )
+
+    id = models.AutoField( primary_key=True,editable=False)
+    nom = models.CharField(max_length = 200 )
+    maintenanceDate = models.DateField(default=datetime.now())
+    mach = models.CharField(max_length=32,choices=TYPE,default='PC')
+    
     def __str__(self):
         return str(self.id) + "->" + self.nom
 
@@ -17,22 +23,24 @@ class Machine(models.Model):
         return str(self.id) + " " + self.nom
 
 class Personnel(models.Model):
-    css = models.CharField(
+    civilite = models.CharField(
         primary_key=True,
-        default=0,
+        default='Indéfini',
         max_length= 13
         )
-
     prenom = models.CharField(
         max_length = 200 ,
     )
-
     nom = models.CharField(
         max_length = 200 ,
         )
-
+    email = models.CharField(
+        max_length = 200 ,
+        )
+    poste = models.CharField(
+        max_length = 200 ,
+        )
     def __str__(self):
-        return str(self.css) + "->" + self.nom + str(self.css) + "->" + self.prenom
-
+        return str(self.civilite) + "->" + self.nom + str(self.civilite) + "->" + self.prenom + str(self.civilite) + "->" + self.email + str(self.civilite) + "->" + self.poste
     def get_name(self):
-        return str(self.css) + " " + self.nom +" " + self.prenom
+        return str(self.civilite) + " " + self.nom +" " + self.prenom +" " + self.email +" " + self.poste
