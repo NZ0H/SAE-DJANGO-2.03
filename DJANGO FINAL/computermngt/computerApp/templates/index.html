@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang = "fr">
 <head>
@@ -9,11 +10,17 @@
 
   
 </head>
+
 <body class="bg-dark">
+  
   {% block sidebar %}
+  {% load static %}
+ 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+     
+      <a class="navbar-brand" href="{% url 'index'%}"><img src="{% static 'computerApp/images/rtdev.png' %}" class="card-img-top" alt="logo" style="height: 50px; object-fit: contain;"></a>
+   
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -28,8 +35,8 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li><a class="dropdown-item" href="{% url 'personnels'%}">Liste Personnels</a></li>
-              <li><a class="dropdown-item" href="#">Ajouter</a></li>
-              <li><a class="dropdown-item" href="#">Supprimer</a></li>
+              <li><a class="dropdown-item" href="{% url 'add-personnel' %}">Ajouter</a></li>
+              <li><a class="dropdown-item" href="{% url 'del-personnel' %}">Supprimer</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -39,31 +46,26 @@
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li><a class="dropdown-item" href="{% url 'machines' %}">Liste Machines</a></li>
               <li><a class="dropdown-item" href="{% url 'add-machine' %}">Ajouter Machines</a></li>
-              <li><a class="dropdown-item" href="#">Supprimer Machines</a></li>
+              <li><a class="dropdown-item" href="{% url 'del-machine' %}">Supprimer Machines</a></li>
             </ul>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'infrastructure' %}">Infrastructure</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'feature' %}">Feature</a>
+            </li>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-      {% endblock %}
- 
-   
+{% endblock %}
 
+{% block content %}
 
-    {% block content%}
-      {% for machine in machines %}
-        <p>
-          <b>{{machine.id}} </b> {{machine.nom}}
-        </p>
-      {% endfor %}
+huyvuyv
 
-      {% for personnel in personnels %}
-      <p>
-        <b>{{personnel.css}} </b> {{personnel.nom}}
-      </p>
-    {% endfor %}
-    {% endblock %}
+{% endblock %}
     
 </body>
 </html>

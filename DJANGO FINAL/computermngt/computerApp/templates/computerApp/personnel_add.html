@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+  <div class="card bg-dark text-white" style="max-width: 400px;">
+    <div class="card-body">
+      <form method="post" class="form-horizontal">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="control-label" for="civilite">Civilité:</label>
+          <select class="form-control" id="civilite" name="civilite">
+            <option value="Monsieur">Monsieur</option>
+            <option value="Madame">Madame</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="nom">Nom:</label>
+          {{ form.nom }}
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="prenom">Prénom:</label>
+            {{ form.prenom }}
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="email">Email:</label>
+            {{ form.email }}        </div>
+        <div class="form-group">
+            <label class="control-label" for="poste">Poste:</label>
+            {{ form.poste }}        </div>
+        
+        <div class="form-group">
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
