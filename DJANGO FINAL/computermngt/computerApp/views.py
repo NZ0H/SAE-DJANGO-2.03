@@ -10,6 +10,7 @@ def index(request):
         'machines' : machines,
         'personnels' : personnels,
     }
+
     return render(request,'templates/index.html',context)
 
 def liste_machines(request):
