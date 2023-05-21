@@ -11,17 +11,15 @@
   
 </head>
 
-<body class="bg-dark">
+<body style="background-color: black;">
   
-  {% block sidebar %}
-  {% load static %}
+{% block sidebar %}
+{% load static %}
 
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-     
       <a class="navbar-brand" href="{% url 'index'%}"><img src="{% static 'computerApp/images/rtdev.png' %}" class="card-img-top" alt="logo" style="height: 50px; object-fit: contain;"></a>
-   
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>

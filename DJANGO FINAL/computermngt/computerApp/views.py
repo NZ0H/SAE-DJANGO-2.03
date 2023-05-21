@@ -15,8 +15,12 @@ def index(request):
 
 def liste_machines(request):
     machines = Machine.objects.all()
+    type_machine = request.GET.get('type')
+    if type_machine:
+        machines = machines.filter(type_machine=type_machine)
     context = {
         'machines' : machines,
+        'type_machine' : type_machine,
     }
     return render(request,'templates/computerApp/liste_machines.html',context)
 
@@ -36,12 +40,16 @@ def machine_add_form(request):
     if request.method == 'POST' : 
         form = AddMachineForm(request.POST or None)
         if form.is_valid():
-            new_machine = Machine(nom=form.cleaned_data['nom'])
+            new_machine = Machine(
+                nom = form.cleaned_data['nom'],
+                lieu_infrastructure = form.cleaned_data['lieu_infrastructure'],
+                maintenanceDate = form.cleaned_data['maintenanceDate'],
+                type_materiel = form.cleaned_data['type_materiel']
+                )
             new_machine.save()
             return redirect('machines')
     else :
         form = AddMachineForm()
-            
     context ={'form':form}
     return render(request,'computerApp/machine_add.html',context)
 
@@ -65,7 +73,7 @@ def personnel_detail_view(request,pk):
 
 def personnel_add_form(request):
     if request.method == 'POST':
-        form = AddPersonnelForm(request.POST)
+        form = AddPersonnelForm(request.POST or None)
         if form.is_valid():
             new_personnel = Personnel(
                 nom=form.cleaned_data['nom'],

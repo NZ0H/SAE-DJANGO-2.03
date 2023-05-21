@@ -1,10 +1,31 @@
 {% extends "index.html" %}
 
 {% block content %}
-
-<form method="post">
-{% csrf_token %}
-<p style='color:white'>Nom :</p>{{form.nom}}
-<input type="submit" value = "Submit">
-</form>
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card text-white" style="background-color: #1c1c1c; max-width: 400px;">
+        <div class="card-body">
+            <form method="post" class="form-horizontal">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="control-label" for="poste">Id :</label>
+                    <div>
+                      {{ form.id }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="confirmation">Phrase à écrire : "Je confirme la suppression de l'utilisateur"</label>
+                    <div>
+                        {{ form.phrase_confirmation }}
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary">Supprimer</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
+

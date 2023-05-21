@@ -1,16 +1,19 @@
 {% extends 'index.html' %}
 
 {% block content%}
+
 <div class="container">
   <div class="card mx-auto mt-5" style="max-width: 600px;">
     <div class="card-header">
-      <h1>Nom:{{machine.nom}}</h1>
+      <h1>{{machine.nom}}</h1>
     </div>
     <div class="card-body">
       <p> <strong>Id:</strong> {{machine.id}}</p>
       <p> <strong>Date de maintenance : </strong> {{machine.maintenanceDate}} </p>
-      <p> <strong>Machine :</strong> {{machine.mach}} </p>
+      <p> <strong>Machine :</strong> {{machine.type_machine}} </p>
+      <p> <strong>Infrastructure :</strong> {{machine.lieu_infrastructure}} </p>
     </div>
   </div>
 </div>
+
 {% endblock%}

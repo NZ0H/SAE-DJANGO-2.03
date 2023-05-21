@@ -2,31 +2,45 @@
 {% extends "index.html" %}
 {% load static %}
     {% block content%}
+    <form method="GET">
+      <div>
+        <select name="type" id="type">
+          <option value="">Tous</option>
+          <option value="PC">PC</option>
+          <option value="Serveur">Serveur</option>
+          <option value="Mac">Mac</option>
+          <option value="Routeur">Routeur</option>
+          <option value="Switch">Switch</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Filtrer</button>
+    </form>
+    
+    
       {% for machine in machines %}
         <div class="card d-inline-block mt-5 mx-lg-10" style="width: 300px;">
-        {% if machine.mach == 'Serveur' %}
+        {% if machine.type_machine == 'Serveur' %}
           <img src="{% static 'computerApp/images/serveur.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
         {% endif %}
         
-        {% if machine.mach == 'Switch' %}
+        {% if machine.type_machine == 'Switch' %}
           <img src="{% static 'computerApp/images/commutateur.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
         {% endif %}
         
-        {% if machine.mach == 'Routeur' %}
+        {% if machine.type_machine == 'Routeur' %}
           <img src="{% static 'computerApp/images/routeur.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
         {% endif %}
         
-        {% if machine.mach == 'Mac' %}
+        {% if machine.type_machine == 'Mac' %}
           <img src="{% static 'computerApp/images/mac.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
         {% endif %}
         
-        {% if machine.mach == 'PC' %}
+        {% if machine.type_machine == 'PC' %}
           <img src="{% static 'computerApp/images/jeux.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
         {% endif %}
 
           <div class="card-body" style="background-color: black;">
-            <h5 class="card-title text-white">{{ machine.nom }}</h5>
-              <a href="{% url 'machine-detail' machine.id %}"> {{machine.id}}</a>
+            <a href="{% url 'machine-detail' machine.id%}" style="text-decoration: none;"><h5 class="card-title text-white">{{ machine.nom }} </h5> </a>
           </div>
         </div>
       {% endfor %}
