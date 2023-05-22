@@ -34,13 +34,11 @@ class AddMachineForm (forms.Form ) :
        
 
 class DeleteMachineForm(forms.Form):
-    nom = forms.CharField(required=True, label='Nom de la machine à supprimer')
-    def clean_nom(self):
-        data = self.cleaned_data["nom"]
-        try:
-            machine = Machine.objects.get(nom=data)
-        except Machine.DoesNotExist:
-            raise forms.ValidationError("Cette machine n'existe pas")
+    id = forms.CharField(required=True, label="Nom de l'employé à supprimer")
+    phrase_confirmation = forms.CharField(label='Confirmez la suppression en écrivant "supprimer"')
+    def clean_id(self):
+        data = self.cleaned_data["id"]
+        machine = Machine.objects.get(id=data)
         return data
 
 

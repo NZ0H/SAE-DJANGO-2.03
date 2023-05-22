@@ -1,7 +1,8 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from .models import Machine,Personnel
 from .forms import AddMachineForm, DeleteMachineForm,AddPersonnelForm,DeletePersonnelForm
-
+import requests
+import json
 
 def index(request):
     machines = Machine.objects.all()
@@ -15,12 +16,12 @@ def index(request):
 
 def liste_machines(request):
     machines = Machine.objects.all()
-    type_machine = request.GET.get('type')
-    if type_machine:
-        machines = machines.filter(type_machine=type_machine)
+    type_materiel = request.GET.get('type')
+    if type_materiel:
+        machines = machines.filter(type_materiel=type_materiel)
     context = {
         'machines' : machines,
-        'type_machine' : type_machine,
+        'type_materiel' : type_materiel,
     }
     return render(request,'templates/computerApp/liste_machines.html',context)
 
@@ -57,10 +58,16 @@ def machine_delete_form(request):
     if request.method == 'POST':
         form = DeleteMachineForm(request.POST or None)
         if form.is_valid():
-            nom = form.cleaned_data['nom']
-            machine = Machine.objects.get(nom=nom)
-            machine.delete()
-            return redirect('machines')
+            id = form.cleaned_data['id']
+            phrase_confirmation = form.cleaned_data['phrase_confirmation']
+            machine = Personnel.objects.filter(id=id).first()
+            if machine and phrase_confirmation == "Je confirme la suppression de l'utilisateur":
+                machine.delete()
+                return redirect('personnels')
+            else:
+                error_msg = "ID inexistant ou phrase de confirmation invalide."
+                context = {'form': form, 'error_msg': error_msg}
+                return render(request, 'computerApp/machine_del.html', context)
     else:
         form = DeleteMachineForm()
     context = {'form': form}
@@ -113,19 +120,20 @@ def personnel_delete_form(request):
 
 def infrastructure(request):
     machines = Machine.objects.all()
-    personnels = Personnel.objects.all()
+    infrastructure = request.GET.get('type')
+    if infrastructure:
+        machines = machines.filter(lieu_infrastructure=infrastructure)
     context = {
         'machines' : machines,
-        'personnels' : personnels,
+        'infrastrucutre':infrastructure,
     }
     return render(request,'computerApp/infrastructure.html',context)
 
 
 def feature(request):
-    machines = Machine.objects.all()
-    personnels = Personnel.objects.all()
-    context = {
-        'machines' : machines,
-        'personnels' : personnels,
-    }
-    return render(request,'computerApp/feature.html',context)
+    ip = requests.get('https://api.ipify.org?format=json')
+    ip_data = json.loads(ip.text)
+    res = requests.get('http://ip-api.com/json/24.48.0.1')
+    location_data_one = res.text
+    location_data = json.loads(location_data_one)
+    return render(request, 'computerApp/feature.html', {'data': location_data})

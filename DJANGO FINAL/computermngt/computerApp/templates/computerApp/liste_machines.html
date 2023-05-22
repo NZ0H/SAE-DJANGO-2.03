@@ -19,23 +19,22 @@
     
       {% for machine in machines %}
         <div class="card d-inline-block mt-5 mx-lg-10" style="width: 300px;">
-        {% if machine.type_machine == 'Serveur' %}
+        {% if machine.type_materiel == 'Serveur' %}
           <img src="{% static 'computerApp/images/serveur.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
-        {% endif %}
-        
-        {% if machine.type_machine == 'Switch' %}
+    
+        {% elif machine.type_materiel == 'Switch' %}
           <img src="{% static 'computerApp/images/commutateur.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
-        {% endif %}
+       
         
-        {% if machine.type_machine == 'Routeur' %}
+        {% elif machine.type_materiel == 'Routeur' %}
           <img src="{% static 'computerApp/images/routeur.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
-        {% endif %}
+     
         
-        {% if machine.type_machine == 'Mac' %}
+        {% elif machine.type_materiel == 'Mac' %}
           <img src="{% static 'computerApp/images/mac.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
-        {% endif %}
         
-        {% if machine.type_machine == 'PC' %}
+        
+        {% elif machine.type_materiel == 'PC' %}
           <img src="{% static 'computerApp/images/jeux.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
         {% endif %}
 

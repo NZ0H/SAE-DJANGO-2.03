@@ -21,7 +21,7 @@ class Machine(models.Model):
     id = models.AutoField( primary_key=True,editable=False)
     nom = models.CharField(max_length = 200 )
     maintenanceDate = models.DateField(default=datetime.now())
-    type_machine = models.CharField(max_length=32,choices=TYPE,default='PC')
+    type_materiel = models.CharField(max_length=32,choices=TYPE,default='PC')
     lieu_infrastructure = models.CharField(max_length=32,choices=Infrastructure,default='Marseille')
 
 class Personnel(models.Model):
