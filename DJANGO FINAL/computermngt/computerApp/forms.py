@@ -34,8 +34,8 @@ class AddMachineForm (forms.Form ) :
        
 
 class DeleteMachineForm(forms.Form):
-    id = forms.CharField(required=True, label="Nom de l'employé à supprimer")
-    phrase_confirmation = forms.CharField(label='Confirmez la suppression en écrivant "supprimer"')
+    id = forms.CharField(required=True, label="Nom de la machine à supprimer")
+    phrase_confirmation = forms.CharField(label='Confirmez la suppression en écrivant "Je confirme la suppression de la machine"')
     def clean_id(self):
         data = self.cleaned_data["id"]
         machine = Machine.objects.get(id=data)
@@ -79,12 +79,12 @@ class AddPersonnelForm (forms.Form ) :
             raise ValidationError(("Erreur de format pour le champ civilité"))
         return data
     
+
 class DeletePersonnelForm(forms.Form):
     id = forms.CharField(required=True, label="Nom de l'employé à supprimer")
-    phrase_confirmation = forms.CharField(label='Confirmez la suppression en écrivant "supprimer"')
-
+    phrase_confirmation = forms.CharField(label='Confirmez la suppression en écrivant : "Je confirme la suppression de la machine"')
+    #poste = forms.ModelChoiceField(queryset=Personnel.Poste)
     def clean_id(self):
         data = self.cleaned_data["id"]
         personnel = Personnel.objects.get(id=data)
         return data
-   

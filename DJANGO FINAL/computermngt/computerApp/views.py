@@ -60,10 +60,10 @@ def machine_delete_form(request):
         if form.is_valid():
             id = form.cleaned_data['id']
             phrase_confirmation = form.cleaned_data['phrase_confirmation']
-            machine = Personnel.objects.filter(id=id).first()
-            if machine and phrase_confirmation == "Je confirme la suppression de l'utilisateur":
+            machine = Machine.objects.filter(id=id).first()
+            if machine and phrase_confirmation == "Je confirme la suppression de la machine":
                 machine.delete()
-                return redirect('personnels')
+                return redirect('machines')
             else:
                 error_msg = "ID inexistant ou phrase de confirmation invalide."
                 context = {'form': form, 'error_msg': error_msg}
@@ -93,7 +93,6 @@ def personnel_add_form(request):
             return redirect('personnels')
     else:
         form = AddPersonnelForm()
-
     context = {'form': form}
     return render(request, 'computerApp/personnel_add.html', context)
 

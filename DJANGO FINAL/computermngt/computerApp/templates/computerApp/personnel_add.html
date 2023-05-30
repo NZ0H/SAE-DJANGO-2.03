@@ -7,6 +7,7 @@
     <div class="card-body">
       <form method="post" class="form-horizontal">
         {% csrf_token %}
+        
         <div class="form-group mt-4">
           <h5 class="control-label" for="civilite">Civilité:</h5>
           <div>
@@ -45,6 +46,25 @@
           </div>
         </div>
         
+        <div class="form-group">
+          <h5 class="control-label" for="type_materiel">Poste :</h5>
+      <select class="form-control form-control-sm" id="type_materiel" name="type_materiel">
+          <option value="Ingénieur en sécurité informatique">Ingénieur en sécurité informatique</option>
+          <option value="Administrateur système">Administrateur système</option>
+          <option value=""></option>
+          <option value="Serveur">Serveur</option>
+          <option value="Mac">Mac</option>
+      </select>
+  </div>
+        
+       
+        ('Administrateur réseau',('Administrateur réseau')),
+        ('Technicien support informatique',('Technicien support informatique')),
+        ("Analyste en systèmes d'information",("Analyste en systèmes d'information")),
+        ("Développeur d'applications",("Développeur d'applications")),
+        ('Responsable de la gestion des données',('Responsable de la gestion des données')),
+
+
         <div class="form-group mt-4">
           <div class="text-center">
             <button type="submit" class="btn btn-primary">Submit</button>
