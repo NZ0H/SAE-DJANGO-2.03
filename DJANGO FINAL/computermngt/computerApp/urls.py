@@ -14,5 +14,6 @@ urlpatterns = [
     path('del-personnel/',views.personnel_delete_form ,name='del-personnel'),
     path('infastructure/',views.infrastructure ,name='infrastructure'),
     path('feature/',views.check_ip ,name='feature'),
+     path('login/', views.login, name='login'),
 ]
 

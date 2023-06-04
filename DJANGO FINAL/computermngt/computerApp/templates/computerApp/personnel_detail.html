@@ -1,19 +1,23 @@
 {% extends "index.html" %}
-
 {% load static %}
-    {% block content%}
-    <link rel="stylesheet" type="text/css" href="{% static 'style_personnel_detail.css' %}">
-<div class="container">
-  <div class="card mx-auto mt-5 taille">
-    <div class="card-header">
-      <h1>{{personnel.prenom}} {{personnel.nom}}</h1>
-    </div>
-    <div class="card-body">
-      <h4>Civilité : {{personnel.civilite}}</h4>
-      <h4>Poste : {{personnel.poste}}</h4>
-      <h4>Email : {{personnel.email}}</h4>
-      <h4>Infrastructure : {{personnel.infrastructure}}</h4>
+{% block content%}
+
+<link rel="stylesheet" type="text/css" href="{% static 'style_personnel_detail.css' %}">
+
+<div style="margin-top:6%">
+  <div class="container">
+    <div class="card mx-auto mt-5 taille">
+      <div class="card-header">
+        <h1>{{personnel.prenom}} {{personnel.nom}}</h1>
+      </div>
+      <div class="card-body">
+        <h4>Civilité : {{personnel.civilite}}</h4>
+        <h4>Poste : {{personnel.poste}}</h4>
+        <h4>Email : {{personnel.email}}</h4>
+        <h4>Infrastructure : {{personnel.infrastructure}}</h4>
+      </div>
     </div>
   </div>
 </div>
+
 {% endblock %}

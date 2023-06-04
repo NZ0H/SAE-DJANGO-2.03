@@ -1,13 +1,11 @@
 
 {% extends "index.html" %}
 {% load static %}
+{% block content%}
 
+<link rel="stylesheet" type="text/css" href="{% static 'style_liste_machines.css' %}">
 
-    {% block content%}
-    <link rel="stylesheet" type="text/css" href="{% static 'style_liste_machines.css' %}">
-    <div style="margin-top:6%">
-
-    
+<div style="margin-top:6%">
     <form method="GET">
       <div>
         <select name="type" id="type">
@@ -20,12 +18,11 @@
         </select>
         <button type="submit" class="btn btn-primary">Filtrer</button>
       </div>
-      
     </form>
-    
     
       {% for machine in machines %}
         <div class="card d-inline-block mt-5 mx-lg-10 taille">
+
         {% if machine.type_materiel == 'Serveur' %}
           <img src="{% static 'computerApp/images/serveur.png' %}" class="card-img-top contenu" alt="logo">
     
@@ -49,7 +46,8 @@
             <a href="{% url 'machine-detail' machine.id%}" class="no-line"><h5 class="card-title text-white">{{ machine.nom }}</h5></a>
           </div>
         </div>
-      
       {% endfor %}
-    {% endblock %}
-  </div>
+ 
+</div>
+ 
+{% endblock %}

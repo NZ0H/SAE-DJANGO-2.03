@@ -1,10 +1,14 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from .models import Machine,Personnel
 from .forms import AddMachineForm, DeleteMachineForm,AddPersonnelForm,DeletePersonnelForm,IPAddressForm
+
+# module de login django
+from django.contrib.auth.views import LoginView
+
+# bibliotheque pour la feature
 import folium
 import ipaddress
 import bigdatacloudapi
-
 
 
 
@@ -15,7 +19,6 @@ def index(request):
         'machines' : machines,
         'personnels' : personnels,
     }
-
     return render(request,'index.html',context)
 
 def liste_machines(request):
@@ -119,8 +122,6 @@ def personnel_delete_form(request):
     context = {'form': form}
     return render(request, 'computerApp/personnel_del.html', context)
 
-
-
 def infrastructure(request):
     machines = Machine.objects.all()
     infrastructure = request.GET.get('type')
@@ -131,10 +132,6 @@ def infrastructure(request):
         'infrastrucutre':infrastructure,
     }
     return render(request,'computerApp/infrastructure.html',context)
-
-
-import re
-
 
 def check_ip(request):
     map = None
@@ -161,7 +158,7 @@ def check_ip(request):
                 is_valid = False
                 map = None
         else:
-            is_valid = None
+            is_valid = False
             map = None
     else:
         form = IPAddressForm()
@@ -180,7 +177,10 @@ def check_ip(request):
 
     return render(request, 'computerApp/feature.html', context)
 
-    
+def login(request):
+    return LoginView.as_view(
+        template_name='computerApp/log.html',
+        redirect_authenticated_user=True)(request)
       
 
 

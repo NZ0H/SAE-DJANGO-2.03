@@ -1,13 +1,13 @@
 {% extends "index.html" %}
-
 {% load static %}
-
 {% block content %}
+
 <link rel="stylesheet" type="text/css" href="{% static 'style_personnel_add.css' %}">
 <div class="container d-flex justify-content-center align-items-center taille" style="width: 100%;">
   <div class="card text-white w-75 fond">
     <div class="card-body">
       <form method="post" class="form-horizontal">
+        
         {% csrf_token %}
 
         <div class="form-group">
@@ -48,10 +48,10 @@
         </div>
 
       </form>
-
     </div>
   </div>
 </div>
+
 {% endblock %}
 
   
