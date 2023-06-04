@@ -1,8 +1,10 @@
 {% extends "index.html" %}
 
-{% block content %}
-<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <div class="card text-white" style="background-color: #1c1c1c; max-width: 400px;">
+{% load static %}
+    {% block content%}
+    <link rel="stylesheet" type="text/css" href="{% static 'style_machine_del.css' %}">
+<div class="container d-flex justify-content-center align-items-center taille">
+    <div class="card text-white fond">
         <div class="card-body">
             <form method="post" class="form-horizontal">
                 {% csrf_token %}

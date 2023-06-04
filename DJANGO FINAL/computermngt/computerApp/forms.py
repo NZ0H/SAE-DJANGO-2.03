@@ -1,12 +1,37 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import Machine,Personnel
+from datetime import date
 
 class AddMachineForm (forms.Form ) :
-    nom = forms.CharField (required = True ,label = 'Nom de la machine')
-    lieu_infrastructure = forms.CharField (required = True ,label = 'Infrastructure')
-    maintenanceDate = forms.CharField (required = True ,label = 'Date de maintenance')
-    type_materiel = forms.CharField (required = True ,label = 'Type de matériel')
+    nom = forms.CharField (
+        required = True ,
+        label = 'Nom de la machine',
+        widget=forms.TextInput(attrs={'size': '26'}))
+    lieu_infrastructure = forms.ChoiceField(
+        required=True,
+        label='Infrastructure',
+        choices=[('Poitiers', 'Poitiers'),
+        ('Marseille', 'Marseille'),
+        ('Châtellerault', 'Châtellerault'),],
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    maintenanceDate = forms.DateField(
+        required=True,
+        label='Date de maintenance',
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+    )
+
+    type_materiel = forms.ChoiceField (
+        required = True ,
+        label = 'Type de matériel',
+        choices = [
+            ('PC', ('PC')),
+            ('Mac',('MAc')),
+            ('Serveur',('Serveur')),
+            ('Switch',('Switch')),
+            ('Routeur',('Routeur')),],
+        widget=forms.Select(attrs={'class': 'form-control'}))
 
     def clean_nom(self) :
         data = self.cleaned_data ["nom"]
@@ -15,9 +40,9 @@ class AddMachineForm (forms.Form ) :
         return data
     
     def clean_maintenanceDate(self):
-        data = self.cleaned_data ["maintenanceDate"]
-        if len(data) > 15 :
-            raise ValidationError(("Erreur de format pour le champ nom"))
+        data = self.cleaned_data["maintenanceDate"]
+        if data < date.today():
+            raise forms.ValidationError("La date de maintenance doit être supérieure ou égale à la date actuelle.")
         return data
     
     def clean_lieu_infrastructure(self):
@@ -43,11 +68,38 @@ class DeleteMachineForm(forms.Form):
 
 
 class AddPersonnelForm (forms.Form ) :
-    nom = forms.CharField (required = True ,label = "Nom de l'employé" )
-    prenom = forms.CharField (required = True ,label = "Prenom de l'employé" )
-    email = forms.CharField (required = True ,label = "Email de l'employé" )
-    poste = forms.CharField (required = True ,label = "Poste de l'employé" )
-    civilite = forms.CharField (required = True ,label = "Civilite de l'employé" )
+    nom = forms.CharField (
+        required = True ,
+        label = "Nom de l'employé",
+        widget=forms.TextInput(attrs={'size': '26'}))
+    
+    prenom = forms.CharField (
+        required = True ,
+        label = "Prenom de l'employé",
+         widget=forms.TextInput(attrs={'size': '26'}) )
+    
+    email = forms.CharField (
+        required = True ,
+        label = "Email de l'employé",
+        widget=forms.TextInput(attrs={'size': '26'}))
+    
+    poste = forms.ChoiceField (
+        required = True ,
+        label = "Poste de l'employé",
+        choices= [('Ingénieur en sécurité informatique', ('Ingénieur en sécurité informatique')),
+        ('Administrateur système', ('Administrateur système')),
+        ('Administrateur réseau', ('Administrateur réseau')),
+        ('Technicien support informatique', ('Technicien support informatique')),
+        ("Analyste en systèmes d'information", ("Analyste en systèmes d'information")),
+        ("Développeur d'applications", ("Développeur d'applications")),
+        ('Responsable de la gestion des données', ('Responsable de la gestion des données')),],
+        widget=forms.Select(attrs={'class': 'form-control'}))
+    
+    civilite = forms.ChoiceField (
+        required = True ,
+        label = "Civilite de l'employé",
+        choices=[('Homme' , ('Homme')),('Femme',('Femme')),('Indéfini',('Indéfini')),],
+        widget=forms.Select(attrs={'class': 'form-control'}))
 
     def clean_nom(self) :
         data = self.cleaned_data ["nom"]
@@ -63,7 +115,7 @@ class AddPersonnelForm (forms.Form ) :
     
     def clean_poste(self):
         data = self.cleaned_data ["poste"]
-        if len(data) > 15 :
+        if data not in ['Ingénieur en sécurité informatique','Administrateur système','Administrateur réseau','Technicien support informatique',"Analyste en systèmes d'information","Développeur d'applications",'Responsable de la gestion des données']:
             raise ValidationError(("Erreur de format pour le champ poste"))
         return data
     
@@ -75,7 +127,7 @@ class AddPersonnelForm (forms.Form ) :
     
     def clean_civilite(self):
         data = self.cleaned_data ["civilite"]
-        if data not in ['Madame', 'Monsieur']:
+        if data not in ['Homme', 'Femme','Indéfini']:
             raise ValidationError(("Erreur de format pour le champ civilité"))
         return data
     
@@ -88,3 +140,6 @@ class DeletePersonnelForm(forms.Form):
         data = self.cleaned_data["id"]
         personnel = Personnel.objects.get(id=data)
         return data
+    
+class IPAddressForm(forms.Form):
+    ip_address = forms.GenericIPAddressField(label='Adresse IP',error_messages={'invalid': 'IP invalide, vérifiez votre requête.'})

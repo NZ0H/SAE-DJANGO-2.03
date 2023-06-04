@@ -1,6 +1,43 @@
 {% extends "index.html" %}
-
+{% load static %}
 {% block content %}
+
+
+<div style="margin-top:10%">
+  <head>
+    <title>Localisation d'une IP Publique</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style_feature.css' %}">
+  </head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4 centered-title">Geolocation</h1>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <h1><label for="id_ip_address">Adresse IP:</label></h1>
+                    <input type="text" name="ip_address" value="{{ form.ip_address.value }}" required id="id_ip_address">
+                    <button type="submit" class="btn btn-primary">Vérifier</button>
+                  </div>
+            </form>
+            {% if is_valid is not None %}
+                <div id="message" class="mt-4">
+                    {% if is_valid %}
+                        <p>{{ ip_address }} est une adresse IP valide.</p>
+                        <div class="map-container show">
+                            {{ map|safe }}
+                        </div>
+                    {% else %}
+                        <p>{{ ip_address }} n'est pas une adresse IP valide.</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+  </body>
+</div>
+
 
 
 {% endblock %}

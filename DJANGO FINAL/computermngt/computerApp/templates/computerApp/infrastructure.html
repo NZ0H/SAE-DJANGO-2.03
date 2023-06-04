@@ -1,7 +1,9 @@
 {% extends "index.html" %}
-
 {% load static %}
-    {% block content%}
+{% block content%}
+    
+  <link rel="stylesheet" type="text/css" href="{% static 'style_infrastructure.css' %}">
+    
     <form method="GET">
       <div>
         <select name="type" id="type">
@@ -9,37 +11,36 @@
           <option value="Marseille">Marseille</option>
           <option value="Poitiers">Poitiers</option>
           <option value="Chatellerault">Châtellerault</option>
-          
         </select>
       </div>
       <button type="submit" class="btn btn-primary">Filtrer</button>
     </form>
     
-    
       {% for machine in machines %}
-        <div class="card d-inline-block mt-5 mx-lg-10" style="width: 300px;">
+        <div class="card d-inline-block mt-5 mx-lg-10 taille">
         {% if machine.type_materiel == 'Serveur' %}
-          <img src="{% static 'computerApp/images/serveur.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
+          <img src="{% static 'computerApp/images/serveur.png' %}" class="card-img-top contenu" alt="logo">
     
         {% elif machine.type_materiel == 'Switch' %}
-          <img src="{% static 'computerApp/images/commutateur.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
+          <img src="{% static 'computerApp/images/commutateur.png' %}" class="card-img-top contenu" alt="logo">
        
         
         {% elif machine.type_materiel == 'Routeur' %}
-          <img src="{% static 'computerApp/images/routeur.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
+          <img src="{% static 'computerApp/images/routeur.png' %}" class="card-img-top contenu" alt="logo">
      
         
         {% elif machine.type_materiel == 'Mac' %}
-          <img src="{% static 'computerApp/images/mac.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
+          <img src="{% static 'computerApp/images/mac.png' %}" class="card-img-top contenu" alt="logo">
         
         
         {% elif machine.type_materiel == 'PC' %}
-          <img src="{% static 'computerApp/images/jeux.png' %}" class="card-img-top" alt="logo" style="height: 100px; object-fit: contain;">
+          <img src="{% static 'computerApp/images/jeux.png' %}" class="card-img-top contenu" alt="logo">
         {% endif %}
 
-          <div class="card-body" style="background-color: black;">
-            <a href="{% url 'machine-detail' machine.id%}" style="text-decoration: none;"><h5 class="card-title text-white">{{ machine.nom }} </h5> </a>
+          <div class="card-body fond">
+            <a href="{% url 'machine-detail' machine.id%}" class="no-line"><h5 class="card-title text-white">{{ machine.nom }}</h5></a>
           </div>
         </div>
       {% endfor %}
-    {% endblock %}
+
+{% endblock %}

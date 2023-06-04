@@ -1,78 +1,58 @@
 {% extends "index.html" %}
 
-{% block content %}
+{% load static %}
 
-<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-  <div class="card text-white w-75" style="background-color: #1c1c1c; max-width: 400px;">
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'style_personnel_add.css' %}">
+<div class="container d-flex justify-content-center align-items-center taille" style="width: 100%;">
+  <div class="card text-white w-75 fond">
     <div class="card-body">
       <form method="post" class="form-horizontal">
         {% csrf_token %}
-        
-        <div class="form-group mt-4">
-          <h5 class="control-label" for="civilite">Civilité:</h5>
-          <div>
-            <select class="form-control form-control-sm" id="civilite" name="civilite">
-              <option value="Monsieur">Monsieur</option>
-              <option value="Madame">Madame</option>
-            </select>
-          </div>
-        </div>
-        
-        <div class="form-group mt-4">
-          <h5 class="control-label" for="nom">Nom:</h5>
+
+        <div class="form-group">
+          <label for="id_nom">Nom de l'employé:</label>
           <div>
             {{ form.nom }}
           </div>
         </div>
-        
-        <div class="form-group mt-4">
-          <h5 class="control-label" for="prenom">Prénom:</h5>
+
+        <div class="form-group">
+          <label for="id_prenom">Prenom de l'employé:</label>
           <div>
             {{ form.prenom }}
           </div>
         </div>
-        
-        <div class="form-group mt-4">
-          <h5 class="control-label" for="email">Email:</h5>
+
+        <div class="form-group">
+          <label for="id_email">Email de l'employé:</label>
           <div>
             {{ form.email }}
           </div>
         </div>
-        
-        <div class="form-group mt-4">
-          <h5 class="control-label" for="poste">Poste:</h5>
-          <div>
-            {{ form.poste }}
-          </div>
+
+        <div class="form-group" style="width:70%">
+          <label for="id_poste">Poste de l'employé:</label>
+          {{ form.poste }}
         </div>
-        
-        <div class="form-group">
-          <h5 class="control-label" for="type_materiel">Poste :</h5>
-      <select class="form-control form-control-sm" id="type_materiel" name="type_materiel">
-          <option value="Ingénieur en sécurité informatique">Ingénieur en sécurité informatique</option>
-          <option value="Administrateur système">Administrateur système</option>
-          <option value=""></option>
-          <option value="Serveur">Serveur</option>
-          <option value="Mac">Mac</option>
-      </select>
-  </div>
-        
-       
-        ('Administrateur réseau',('Administrateur réseau')),
-        ('Technicien support informatique',('Technicien support informatique')),
-        ("Analyste en systèmes d'information",("Analyste en systèmes d'information")),
-        ("Développeur d'applications",("Développeur d'applications")),
-        ('Responsable de la gestion des données',('Responsable de la gestion des données')),
 
+        <div class="form-group" style="width:70%">
+          <label for="id_civilite">Civilite de l'employé:</label>
+          {{ form.civilite }}
+        </div>
 
-        <div class="form-group mt-4">
+        <div class="form-group mt-3">
           <div class="text-center">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Ajouter</button>
           </div>
         </div>
+
       </form>
+
     </div>
   </div>
 </div>
-
 {% endblock %}
+
+  
+

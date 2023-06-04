@@ -1,7 +1,10 @@
 {% extends "index.html" %}
-{% block content %}
+
+{% load static %}
+    {% block content%}
+    <link rel="stylesheet" type="text/css" href="{% static 'style_personnel_detail.css' %}">
 <div class="container">
-  <div class="card mx-auto mt-5" style="max-width: 600px;">
+  <div class="card mx-auto mt-5 taille">
     <div class="card-header">
       <h1>{{personnel.prenom}} {{personnel.nom}}</h1>
     </div>

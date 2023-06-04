@@ -1,8 +1,12 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from .models import Machine,Personnel
-from .forms import AddMachineForm, DeleteMachineForm,AddPersonnelForm,DeletePersonnelForm
-import requests
-import json
+from .forms import AddMachineForm, DeleteMachineForm,AddPersonnelForm,DeletePersonnelForm,IPAddressForm
+import folium
+import ipaddress
+import bigdatacloudapi
+
+
+
 
 def index(request):
     machines = Machine.objects.all()
@@ -12,7 +16,7 @@ def index(request):
         'personnels' : personnels,
     }
 
-    return render(request,'templates/index.html',context)
+    return render(request,'index.html',context)
 
 def liste_machines(request):
     machines = Machine.objects.all()
@@ -23,14 +27,14 @@ def liste_machines(request):
         'machines' : machines,
         'type_materiel' : type_materiel,
     }
-    return render(request,'templates/computerApp/liste_machines.html',context)
+    return render(request,'computerApp/liste_machines.html',context)
 
 def liste_personnels(request):
     personnels = Personnel.objects.all()
     context = {
         'personnels' : personnels,
     }
-    return render(request,'templates/computerApp/liste_personnels.html',context)
+    return render(request,'computerApp/liste_personnels.html',context)
 
 def machine_detail_view(request,pk):
     machine = get_object_or_404(Machine,id=pk)
@@ -129,10 +133,56 @@ def infrastructure(request):
     return render(request,'computerApp/infrastructure.html',context)
 
 
-def feature(request):
-    ip = requests.get('https://api.ipify.org?format=json')
-    ip_data = json.loads(ip.text)
-    res = requests.get('http://ip-api.com/json/24.48.0.1')
-    location_data_one = res.text
-    location_data = json.loads(location_data_one)
-    return render(request, 'computerApp/feature.html', {'data': location_data})
+import re
+
+
+def check_ip(request):
+    map = None
+    if request.method == 'POST':
+        form = IPAddressForm(request.POST)
+        if form.is_valid():
+            ip_address = form.cleaned_data['ip_address']
+            try:
+                ipaddress.ip_address(ip_address)
+                is_valid = True
+
+                apiKey = 'bdc_5b446486aeaf4a95a7829e947b329442'
+                client = bigdatacloudapi.Client(apiKey)
+                
+                resultObject, httpResponseCode = client.getIpGeolocationFull({"ip": ip_address})
+                value = resultObject
+
+                latitude = value['location']['latitude']
+                longitude = value['location']['longitude']
+                map = folium.Map(location=[latitude, longitude], zoom_start=10)
+                folium.Marker([latitude, longitude]).add_to(map)
+
+            except ValueError:
+                is_valid = False
+                map = None
+        else:
+            is_valid = None
+            map = None
+    else:
+        form = IPAddressForm()
+        is_valid = None
+        
+    if map is not None:
+        map_html = map._repr_html_()
+    else:
+        map_html = None
+
+    context = {
+        'form': form,
+        'is_valid': is_valid,
+        'map': map_html,
+    }
+
+    return render(request, 'computerApp/feature.html', context)
+
+    
+      
+
+
+    
+ 

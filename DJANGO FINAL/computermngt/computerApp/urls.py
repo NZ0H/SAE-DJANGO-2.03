@@ -13,6 +13,6 @@ urlpatterns = [
     path('add-personnel/',views.personnel_add_form,name='add-personnel'),
     path('del-personnel/',views.personnel_delete_form ,name='del-personnel'),
     path('infastructure/',views.infrastructure ,name='infrastructure'),
-    path('feature/',views.feature ,name='feature'),
+    path('feature/',views.check_ip ,name='feature'),
 ]
 

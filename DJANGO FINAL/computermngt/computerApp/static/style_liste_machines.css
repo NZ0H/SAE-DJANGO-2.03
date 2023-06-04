@@ -1,0 +1,17 @@
+.taille{
+    width: 300px;
+    margin-left: 20px;
+}
+
+.contenu{
+    height: 150px; 
+    object-fit: contain;
+}
+
+.fond{
+    background-color: black;
+}
+
+.no-line{
+    text-decoration: none;
+}
