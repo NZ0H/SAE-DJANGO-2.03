@@ -1,0 +1,71 @@
+
+{% extends "index.html" %}
+{% load static %}
+{% block content%}
+
+<link rel="stylesheet" type="text/css" href="{% static 'style_liste_machines.css' %}">
+
+<div style="margin-top:6%">
+    <form method="GET">
+      <div>
+        <select name="type" id="type">
+          <option value="">Tous</option>
+          <option value="PC">PC</option>
+          <option value="Serveur">Serveur</option>
+          <option value="Mac">Mac</option>
+          <option value="Routeur">Routeur</option>
+          <option value="Switch">Switch</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filtrer</button>
+      </div>
+    </form>
+    
+      {% for machine in machines %}
+        <div class="card d-inline-block mt-5 mx-lg-10 taille">
+
+        {% if machine.type_materiel == 'Serveur' %}
+          <img src="{% static 'computerApp/images/serveur.png' %}" class="card-img-top contenu" alt="logo">
+    
+        {% elif machine.type_materiel == 'Switch' %}
+          <img src="{% static 'computerApp/images/commutateur.png' %}" class="card-img-top contenu" alt="logo">
+       
+        
+        {% elif machine.type_materiel == 'Routeur' %}
+          <img src="{% static 'computerApp/images/routeur.png' %}" class="card-img-top contenu" alt="logo">
+     
+        
+        {% elif machine.type_materiel == 'Mac' %}
+          <img src="{% static 'computerApp/images/mac.png' %}" class="card-img-top contenu" alt="logo">
+        
+        
+        {% elif machine.type_materiel == 'PC' %}
+          <img src="{% static 'computerApp/images/jeux.png' %}" class="card-img-top contenu" alt="logo">
+        {% endif %}
+
+          <div class="card-body fond">
+            
+            {% if machine.maintenanceDate == date_m %}
+              <a href="{% url 'machine-detail' machine.id%}" class="no-line d-flex justify-content-between align-items-center">
+                <h5 class="card-title text-white">{{ machine.nom_m}}</h5>
+                <img src="{% static 'computerApp/images/switch-on.png' %}" alt="Machine allumée" style='width:50px'>
+              </a>
+            {% else %}
+              {% if machine.num_a < 0.65 %}
+                <a href="{% url 'machine-detail' machine.id%}" class="no-line d-flex justify-content-between align-items-center">
+                  <h5 class="card-title text-white">{{ machine.nom_m }}</h5>
+                  <img src="{% static 'computerApp/images/switch-on.png' %}" alt="Machine éteinte" style='width:50px'>
+                </a> 
+              {% else %}
+                <a href="{% url 'machine-detail' machine.id%}" class="no-line d-flex justify-content-between align-items-center">
+                  <h5 class="card-title text-white">{{ machine.nom_m }}</h5>
+                  <img src="{% static 'computerApp/images/switch-off.png' %}" alt="Machine éteinte" style='width:50px'>
+                </a> 
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+ 
+</div>
+ 
+{% endblock %}

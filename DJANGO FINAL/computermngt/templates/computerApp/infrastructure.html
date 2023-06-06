@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content%}
+    
+<link rel="stylesheet" type="text/css" href="{% static 'style_infrastructure.css' %}">
+
+<div style="margin-top:6%">
+  <form method="GET">
+    <div>
+      <select name="type" id="type">
+        <option value="">Tous</option>
+        <option value="Marseille">Marseille</option>
+        <option value="Poitiers">Poitiers</option>
+        <option value="Chatellerault">Châtellerault</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Filtrer</button>
+    </div>
+  </form>
+  
+  {% for machine in machines %}
+    <div class="card d-inline-block mt-5 mx-lg-10 taille">
+    {% if machine.type_materiel == 'Serveur' %}
+      <img src="{% static 'computerApp/images/serveur.png' %}" class="card-img-top contenu" alt="logo">
+
+    {% elif machine.type_materiel == 'Switch' %}
+      <img src="{% static 'computerApp/images/commutateur.png' %}" class="card-img-top contenu" alt="logo">
+    
+    
+    {% elif machine.type_materiel == 'Routeur' %}
+      <img src="{% static 'computerApp/images/routeur.png' %}" class="card-img-top contenu" alt="logo">
+  
+    
+    {% elif machine.type_materiel == 'Mac' %}
+      <img src="{% static 'computerApp/images/mac.png' %}" class="card-img-top contenu" alt="logo">
+    
+    
+    {% elif machine.type_materiel == 'PC' %}
+      <img src="{% static 'computerApp/images/jeux.png' %}" class="card-img-top contenu" alt="logo">
+    {% endif %}
+
+      <div class="card-body fond">
+        <a href="{% url 'machine-detail' machine.id%}" class="no-line"><h5 class="card-title text-white">{{ machine.nom_m }}</h5></a>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
