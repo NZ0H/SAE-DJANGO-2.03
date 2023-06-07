@@ -142,9 +142,8 @@ class AddPersonnelForm (forms.Form ) :
     
 
 class DeletePersonnelForm(forms.Form):
-    id = forms.CharField(required=True, label="Nom de l'employé à supprimer")
-    phrase_confirmation = forms.CharField(label='Confirmez la suppression en écrivant : "Je confirme la suppression de la machine"')
-    #poste = forms.ModelChoiceField(queryset=Personnel.Poste)
+    id = forms.CharField(required=True, label="ID de l'employé à supprimer")
+    phrase_confirmation = forms.CharField(label='Confirmez la suppression en écrivant : "Je confirme la suppression de l utilisateur"')
     def clean_id(self):
         data = self.cleaned_data["id"]
         personnel = Personnel.objects.get(id=data)

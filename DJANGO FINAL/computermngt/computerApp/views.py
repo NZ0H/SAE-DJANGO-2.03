@@ -145,7 +145,7 @@ def personnel_delete_form(request):
             id = form.cleaned_data['id']
             phrase_confirmation = form.cleaned_data['phrase_confirmation']
             personnel = Personnel.objects.filter(id=id).first()
-            if personnel and phrase_confirmation == "Je confirme la suppression de l'utilisateur":
+            if personnel and phrase_confirmation == "Je confirme la suppression de l utilisateur":
                 personnel.delete()
                 return redirect('personnels')
             else:
