@@ -19,12 +19,17 @@ class Machine(models.Model):
         ('Marseille',('Marseille')),
         ('Châtellerault',('Châtellerault')),
     )
-
+    etat_choix = [
+        ('on', 'ON'),
+        ('off', 'OFF'),
+        ('maintenance','maintenance')
+    ]
     id = models.AutoField( primary_key=True,editable=False)
     nom_m = models.CharField(max_length = 200 )
     maintenanceDate = models.DateField(default=datetime.now())
     type_materiel = models.CharField(max_length = 40,choices=TYPE,default='PC')
     lieu_infrastructure = models.CharField(max_length = 60, choices=Infrastructure,default='Marseille')
+    etat = models.CharField(max_length=12, choices=etat_choix, default='off')
 
 class Personnel(models.Model):
     Poste = (

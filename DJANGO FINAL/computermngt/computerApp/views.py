@@ -36,10 +36,10 @@ def liste_machines(request):
     date_m = (date.today()).strftime('%Y-%m-%d')
     for machine in machines:
         machine.etat = random.choice(['on', 'off'])
-        if machine.maintenanceDate == date_m:
-            etat = 'maintenance'
-        
-            
+        print(machine.maintenanceDate,date_m)
+        if machine.maintenanceDate.strftime('%Y-%m-%d') == date_m:
+            print(machine.maintenanceDate)
+            machine.etat = 'maintenance'    
     if type_materiel:
         machines = machines.filter(type_materiel=type_materiel)
     context = {
