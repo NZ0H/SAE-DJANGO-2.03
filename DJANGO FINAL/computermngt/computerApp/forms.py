@@ -2,12 +2,14 @@ from django import forms
 from django.core.exceptions import ValidationError
 from .models import Machine,Personnel
 from datetime import date
+from random import random
 
 class AddMachineForm (forms.Form ) :
-    nom = forms.CharField (
+    nom_m = forms.CharField (
         required = True ,
         label = 'Nom de la machine',
         widget=forms.TextInput(attrs={'size': '26'}))
+    
     lieu_infrastructure = forms.ChoiceField(
         required=True,
         label='Infrastructure',
@@ -16,10 +18,14 @@ class AddMachineForm (forms.Form ) :
         ('Châtellerault', 'Châtellerault'),],
         widget=forms.Select(attrs={'class': 'form-control'})
     )
-    maintenanceDate = forms.DateField(
+    maintenanceDate = forms.CharField(
         required=True,
         label='Date de maintenance',
-        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+        widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
+    )
+
+    etat = forms.CharField(
+        required=False,
     )
 
     type_materiel = forms.ChoiceField (
@@ -32,17 +38,15 @@ class AddMachineForm (forms.Form ) :
             ('Switch',('Switch')),
             ('Routeur',('Routeur')),],
         widget=forms.Select(attrs={'class': 'form-control'}))
-
-    def clean_nom(self) :
-        data = self.cleaned_data ["nom"]
+   
+    def clean_nom_m(self) :
+        data = self.cleaned_data ["nom_m"]
         if len(data) > 15 :
             raise ValidationError(("Erreur de format pour le champ nom"))
         return data
     
     def clean_maintenanceDate(self):
         data = self.cleaned_data["maintenanceDate"]
-        if data < date.today():
-            raise forms.ValidationError("La date de maintenance doit être supérieure ou égale à la date actuelle.")
         return data
     
     def clean_lieu_infrastructure(self):
@@ -56,10 +60,15 @@ class AddMachineForm (forms.Form ) :
         if len(data) > 15 :
             raise ValidationError(("Erreur de format pour le champ nom"))
         return data
-       
+    def clean_etat_machine(self):
+        data = self.cleaned_data ["etat"]
+        if len(data) > 3 :
+            raise ValidationError(("Erreur de format pour le champ nom"))
+        return data
+   
 
 class DeleteMachineForm(forms.Form):
-    id = forms.CharField(required=True, label="Nom de la machine à supprimer")
+    id = forms.CharField(required=True, label="ID de la machine à supprimer")
     phrase_confirmation = forms.CharField(label='Confirmez la suppression en écrivant "Je confirme la suppression de la machine"')
     def clean_id(self):
         data = self.cleaned_data["id"]

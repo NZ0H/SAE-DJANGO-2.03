@@ -3,14 +3,12 @@
 {% block content%}
 
 <link rel="stylesheet" type="text/css" href="{% static 'style_machine_del.css' %}">
-
-<div class="container d-flex justify-content-center align-items-center taille">
+<body style='background-color: #393939 ;'> 
+<div class="container d-flex justify-content-center align-items-center taille" style='margin-top:6% ;'>
     <div class="card text-white fond">
         <div class="card-body">
             <form method="post" class="form-horizontal">
-
                 {% csrf_token %}
-
                 {{ form.as_p }}
                 <div class="form-group mt-3">
                     <div class="text-center">
@@ -21,6 +19,6 @@
         </div>
     </div>
 </div>
-
+</body>
 {% endblock %}
 

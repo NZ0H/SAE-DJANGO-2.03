@@ -1,17 +1,24 @@
-from django.shortcuts import render,get_object_or_404,redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Machine,Personnel
 from .forms import AddMachineForm, DeleteMachineForm,AddPersonnelForm,DeletePersonnelForm,IPAddressForm
+from django.contrib import messages
+from django.utils import timezone
+
+
+# gestion d'allumer,eteind, maintenance
+import random
+from datetime import date
 
 # module de login django
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView,LogoutView
+from django.contrib.auth.decorators import login_required
 
 # bibliotheque pour la feature
 import folium
 import ipaddress
 import bigdatacloudapi
 
-
-
+#page racine
 def index(request):
     machines = Machine.objects.all()
     personnels = Personnel.objects.all()
@@ -21,17 +28,31 @@ def index(request):
     }
     return render(request,'index.html',context)
 
+#vu liste machine
+@login_required
 def liste_machines(request):
     machines = Machine.objects.all()
     type_materiel = request.GET.get('type')
+    date_m = (date.today()).strftime('%Y-%m-%d')
+    for machine in machines:
+        machine.etat = random.choice(['on', 'off'])
+        if machine.maintenanceDate == date_m:
+            etat = 'maintenance'
+        
+            
     if type_materiel:
         machines = machines.filter(type_materiel=type_materiel)
     context = {
         'machines' : machines,
         'type_materiel' : type_materiel,
+        'date_m' : date_m,
+        
     }
+    print(date_m)
     return render(request,'computerApp/liste_machines.html',context)
 
+#vu liste personnel
+@login_required
 def liste_personnels(request):
     personnels = Personnel.objects.all()
     context = {
@@ -39,28 +60,36 @@ def liste_personnels(request):
     }
     return render(request,'computerApp/liste_personnels.html',context)
 
+# vu detail machine
+@login_required
 def machine_detail_view(request,pk):
     machine = get_object_or_404(Machine,id=pk)
     context = {'machine':machine}
     return render(request,'computerApp/machine_detail.html',context)
 
+#vu ajout machine
+@login_required
 def machine_add_form(request):
     if request.method == 'POST' : 
         form = AddMachineForm(request.POST or None)
         if form.is_valid():
             new_machine = Machine(
-                nom = form.cleaned_data['nom'],
+                nom_m = form.cleaned_data['nom_m'],
                 lieu_infrastructure = form.cleaned_data['lieu_infrastructure'],
-                maintenanceDate = form.cleaned_data['maintenanceDate'],
+                maintenanceDate = (form.cleaned_data['maintenanceDate']),
                 type_materiel = form.cleaned_data['type_materiel']
                 )
             new_machine.save()
+            messages.success(request, "La machine a été ajoutée avec succès.")
             return redirect('machines')
+        
     else :
         form = AddMachineForm()
     context ={'form':form}
     return render(request,'computerApp/machine_add.html',context)
 
+#vu suppression machine
+@login_required
 def machine_delete_form(request):
     if request.method == 'POST':
         form = DeleteMachineForm(request.POST or None)
@@ -80,11 +109,15 @@ def machine_delete_form(request):
     context = {'form': form}
     return render(request, 'computerApp/machine_del.html', context)
 
+#vu du detail d'un personnel
+@login_required
 def personnel_detail_view(request,pk):
     personnel = get_object_or_404(Personnel,id=pk)
     context = {"personnel":personnel}
     return render(request,'computerApp/personnel_detail.html',context)
 
+# vu ajout personnel
+@login_required
 def personnel_add_form(request):
     if request.method == 'POST':
         form = AddPersonnelForm(request.POST or None)
@@ -103,6 +136,8 @@ def personnel_add_form(request):
     context = {'form': form}
     return render(request, 'computerApp/personnel_add.html', context)
 
+#vu suppression personnel
+@login_required
 def personnel_delete_form(request):
     if request.method == 'POST':
         form = DeletePersonnelForm(request.POST or None)
@@ -122,6 +157,8 @@ def personnel_delete_form(request):
     context = {'form': form}
     return render(request, 'computerApp/personnel_del.html', context)
 
+#vu infrastructure
+@login_required
 def infrastructure(request):
     machines = Machine.objects.all()
     infrastructure = request.GET.get('type')
@@ -133,6 +170,7 @@ def infrastructure(request):
     }
     return render(request,'computerApp/infrastructure.html',context)
 
+@login_required
 def check_ip(request):
     map = None
     if request.method == 'POST':
@@ -140,20 +178,24 @@ def check_ip(request):
         if form.is_valid():
             ip_address = form.cleaned_data['ip_address']
             try:
+                #verification de si c'est une IP
                 ipaddress.ip_address(ip_address)
                 is_valid = True
 
+                #connexion avec la clef API
                 apiKey = 'bdc_5b446486aeaf4a95a7829e947b329442'
                 client = bigdatacloudapi.Client(apiKey)
                 
+                #retour de la requete 
                 resultObject, httpResponseCode = client.getIpGeolocationFull({"ip": ip_address})
                 value = resultObject
 
+                #affichage du resultat de value sous la forme d'une carte
                 latitude = value['location']['latitude']
                 longitude = value['location']['longitude']
                 map = folium.Map(location=[latitude, longitude], zoom_start=10)
                 folium.Marker([latitude, longitude]).add_to(map)
-
+#gestion des différentes erreurs pouvant arriver
             except ValueError:
                 is_valid = False
                 map = None
@@ -177,12 +219,28 @@ def check_ip(request):
 
     return render(request, 'computerApp/feature.html', context)
 
-def login(request):
-    return LoginView.as_view(
-        template_name='computerApp/log.html',
-        redirect_authenticated_user=True)(request)
-      
+#vu connexion
+def login_views(request):
+    return LoginView.as_view(template_name='computerApp/login.html',redirect_authenticated_user=True)(request)
 
+#vu deconnexion  
+def logout_views(request):
+    return LogoutView.as_view(template_name='computerApp/logout.html')(request)
 
+#vu maintenance
+def maintenance(request):
+    temp_maintenance = request.GET.get('type')
+    if temp_maintenance == 'a venir':
+        maintenances = Machine.objects.filter(maintenanceDate__gte=timezone.now()).order_by('maintenanceDate')
+    elif temp_maintenance == 'anciennes':
+        maintenances = Machine.objects.filter(maintenanceDate__lt=timezone.now()).order_by('-maintenanceDate')
+    else:
+        maintenances = Machine.objects.none()
+
+    context = {
+        'maintenances' : maintenances,
+    }
+    
+    return render(request, 'computerApp/maintenance.html', context)
     
  
