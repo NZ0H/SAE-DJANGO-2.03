@@ -62,7 +62,7 @@ class AddMachineForm (forms.Form ) :
         return data
     def clean_etat_machine(self):
         data = self.cleaned_data ["etat"]
-        if len(data) > 3 :
+        if len(data) > 12 :
             raise ValidationError(("Erreur de format pour le champ nom"))
         return data
    

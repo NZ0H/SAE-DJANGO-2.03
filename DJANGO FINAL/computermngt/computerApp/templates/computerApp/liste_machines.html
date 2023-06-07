@@ -44,24 +44,24 @@
 
           <div class="card-body fond">
             
-            {% if machine.etat == 'maintenance'%}
+            {% if machine.etat == 'maintenance' %}
               <a href="{% url 'machine-detail' machine.id%}" class="no-line d-flex justify-content-between align-items-center">
                 <h5 class="card-title text-white">{{ machine.nom_m}}</h5>
-                <img src="{% static 'computerApp/images/switch-on.png' %}" alt="Machine allumée" style='width:50px'>
+                <img src="{% static 'computerApp/images/web-maintenance.png' %}" alt="Machine allumée" style='width:50px'>
               </a>
+            {% elif machine.etat == 'on' %}
+              
+              <a href="{% url 'machine-detail' machine.id%}" class="no-line d-flex justify-content-between align-items-center">
+                <h5 class="card-title text-white">{{ machine.nom_m }}</h5>
+                <img src="{% static 'computerApp/images/switch-on.png' %}" alt="Machine éteinte" style='width:50px'>
+              </a> 
             {% else %}
-              {% if machine.etat == 'on' %}
-                <a href="{% url 'machine-detail' machine.id%}" class="no-line d-flex justify-content-between align-items-center">
-                  <h5 class="card-title text-white">{{ machine.nom_m }}</h5>
-                  <img src="{% static 'computerApp/images/switch-on.png' %}" alt="Machine éteinte" style='width:50px'>
-                </a> 
-              {% else %}
                 <a href="{% url 'machine-detail' machine.id%}" class="no-line d-flex justify-content-between align-items-center">
                   <h5 class="card-title text-white">{{ machine.nom_m }}</h5>
                   <img src="{% static 'computerApp/images/switch-off.png' %}" alt="Machine éteinte" style='width:50px'>
                 </a> 
-              {% endif %}
             {% endif %}
+            
           </div>
         </div>
       {% endfor %}
