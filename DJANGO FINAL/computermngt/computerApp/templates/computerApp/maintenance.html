@@ -2,44 +2,49 @@
 {% load static %}
 {% block content%}
 
-<link rel="stylesheet" type="text/css" href="{% static 'style_maintenance.css' %}">
+<link rel="stylesheet"
 
-<body style='background-color: #393939;  margin-top:6%;'>  
-  <h1>Date de maintenance :</h1>
-  <div class="filter-option" style="">
-    <form method="GET">
-      <button type="submit" name="type" value="a venir">Maintenances à venir</button>
-      <button type="submit" name="type" value="anciennes">Anciennes maintenances</button>
-    </form>
-  </div>
-  <div class="container" >
-    
-    {% if maintenances %}
-      <table class="maintenance-table">
-        <thead>
-          <tr>
-            <th>Nom de la machine</th>
-            <th>Architecture</th>
-            <th>Date de maintenance</th>
-            <th>Type de matériel</th>
-            <th>Effectué par</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for maintenance in maintenances %}
-            <tr>
-              <td>{{ maintenance.nom_m }}</td>
-              <td>{{ maintenance.lieu_infrastructure }}</td>
-              <td>{{ maintenance.maintenanceDate }}</td>
-              <td>{{ maintenance.type_materiel }}</td>
-              <td>Admin</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-      <p>Aucune maintenance à venir.</p>
-    {% endif %}
+<body style="background-color: #282626; margin-top: 6%;">
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <h1 class="mt-5">Date de maintenance :</h1>
+      <form method="GET">
+        <div class="btn-group" role="group" aria-label="Options de filtre">
+          <button type="submit" name="type" value="a venir" class="btn btn-primary me-2">Maintenances à venir</button>
+          <button type="submit" name="type" value="anciennes" class="btn btn-primary">Anciennes maintenances</button>
+        </div>
+      </form>
+    </div>
+    <div class="row justify-content-center mt-5">
+      {% if maintenances %}
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>Nom de la machine</th>
+                <th>Architecture</th>
+                <th>Date de maintenance</th>
+                <th>Type de matériel</th>
+                <th>Effectué par</th>
+              </tr>
+            </thead>
+            <tbody style="background-color : white;">
+              {% for maintenance in maintenances %}
+                <tr>
+                  <td>{{ maintenance.nom_m }}</td>
+                  <td>{{ maintenance.lieu_infrastructure }}</td>
+                  <td>{{ maintenance.maintenanceDate }}</td>
+                  <td>{{ maintenance.type_materiel }}</td>
+                  <td>Admin</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p>Aucune maintenance à venir.</p>
+      {% endif %}
+    </div>
   </div>
 </body>
 {% endblock %}

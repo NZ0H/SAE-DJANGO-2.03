@@ -80,7 +80,6 @@ def machine_add_form(request):
                 type_materiel = form.cleaned_data['type_materiel']
                 )
             new_machine.save()
-            messages.success(request, "La machine a été ajoutée avec succès.")
             return redirect('machines')
         
     else :
@@ -101,8 +100,7 @@ def machine_delete_form(request):
                 machine.delete()
                 return redirect('machines')
             else:
-                error_msg = "ID inexistant ou phrase de confirmation invalide."
-                context = {'form': form, 'error_msg': error_msg}
+                context = {'form': form}
                 return render(request, 'computerApp/machine_del.html', context)
     else:
         form = DeleteMachineForm()

@@ -3,7 +3,7 @@
 {% block content %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'style_machine_add.css' %}">
-<body style='background-color: #393939 ;'>  
+<body style='background-color: #282626 ;'>  
 <div class="container d-flex justify-content-center align-items-center taille" style="width: 100%;margin-top:6% ;">
   <div class="card text-white w-75 fond">
     <div class="card-body">
@@ -11,7 +11,7 @@
               {% csrf_token %}
 
                 <div class="form-group">
-                  <label>Nom de l'employé :</label>
+                  <label>Nom de la machine :</label>
                   <div>
                     {{ form.nom_m }}
                   </div>

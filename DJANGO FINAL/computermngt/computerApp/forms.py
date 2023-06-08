@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from .models import Machine,Personnel
 from datetime import date
-from random import random
+
 
 class AddMachineForm (forms.Form ) :
     nom_m = forms.CharField (
